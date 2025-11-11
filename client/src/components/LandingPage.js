@@ -113,7 +113,7 @@ const LandingPage = () => {
                         <div className="trust-feature">
                             <div className="trust-icon">📱</div>
                             <h4>Easy Communication</h4>
-                            <p>Chat with sellers directly</p>
+                            <p>No delivery charges. Pick your order directly.</p>
                         </div>
                     </div>
                 </div>

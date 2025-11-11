@@ -1587,8 +1587,8 @@ form, .register-form, .login-form, .add-product-form, .become-seller-form {
   cursor: pointer;
   display: flex;
   flex-direction: column;
-  gap: 5px;
-  padding: 8px;
+  gap: 4px;
+  padding: 6px;
   transition: all 0.3s ease;
 }
 
@@ -1597,15 +1597,15 @@ form, .register-form, .login-form, .add-product-form, .become-seller-form {
 }
 
 .hamburger-line {
-  width: 28px;
-  height: 3px;
+  width: 22px;
+  height: 2px;
   background-color: var(--primary-text);
-  border-radius: 3px;
+  border-radius: 2px;
   transition: all 0.3s ease;
 }
 
 .hamburger-btn.active .hamburger-line:nth-child(1) {
-  transform: translateY(8px) rotate(45deg);
+  transform: translateY(6px) rotate(45deg);
 }
 
 .hamburger-btn.active .hamburger-line:nth-child(2) {
@@ -1613,7 +1613,7 @@ form, .register-form, .login-form, .add-product-form, .become-seller-form {
 }
 
 .hamburger-btn.active .hamburger-line:nth-child(3) {
-  transform: translateY(-8px) rotate(-45deg);
+  transform: translateY(-6px) rotate(-45deg);
 }
 
 .navbar-brand-final {
@@ -1666,6 +1666,7 @@ form, .register-form, .login-form, .add-product-form, .become-seller-form {
   text-transform: uppercase;
   letter-spacing: 1px;
   margin-bottom: 1rem;
+  padding-left: 0.5rem;
 }
 
 .nav-menu-item {
@@ -1683,6 +1684,7 @@ form, .register-form, .login-form, .add-product-form, .become-seller-form {
   background-color: var(--light-bg);
   color: var(--primary-text);
   padding-left: 1.3rem;
+  transform: none;
 }
 
 .nav-menu-divider {
@@ -1727,7 +1729,7 @@ form, .register-form, .login-form, .add-product-form, .become-seller-form {
   background: none;
   border: none;
   cursor: pointer;
-  padding: 0.5rem;
+  padding: 0.4rem;
   color: var(--primary-text);
   transition: all 0.3s ease;
   display: flex;
@@ -1742,21 +1744,21 @@ form, .register-form, .login-form, .add-product-form, .become-seller-form {
 }
 
 .cart-icon-btn svg {
-  width: 24px;
-  height: 24px;
+  width: 20px;
+  height: 20px;
 }
 
 .cart-badge {
   position: absolute;
-  top: 0;
-  right: 0;
+  top: -2px;
+  right: -2px;
   background-color: var(--error);
   color: var(--white);
-  font-size: 0.7rem;
+  font-size: 0.65rem;
   font-weight: 700;
-  padding: 0.15rem 0.4rem;
+  padding: 0.1rem 0.35rem;
   border-radius: 10px;
-  min-width: 18px;
+  min-width: 16px;
   text-align: center;
   line-height: 1;
 }
@@ -1767,25 +1769,91 @@ form, .register-form, .login-form, .add-product-form, .become-seller-form {
 }
 
 .profile-icon-final {
-  width: 48px;
-  height: 48px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
-  background: linear-gradient(135deg, var(--primary-text), var(--accent-yellow));
+  background: linear-gradient(135deg, #024959, #F2C12E);
   color: var(--white);
   border: none;
-  font-size: 1.3rem;
+  font-size: 1.1rem;
   font-weight: 700;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.3s ease;
-  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
+  transition: none;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+  position: relative;
+  overflow: hidden;
+  will-change: transform, box-shadow, background;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  z-index: 1;
 }
 
-.profile-icon-final:hover {
-  transform: scale(1.08);
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+.profile-icon-final > * {
+  position: relative;
+  z-index: 3;
+}
+
+.profile-icon-final::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  padding: 2px;
+  background: linear-gradient(
+    90deg,
+    #024959,
+    #F2C12E,
+    #F2AE30,
+    #024959
+  );
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.profile-icon-final:hover::before {
+  opacity: 1;
+  animation: borderRotate 2s linear infinite;
+}
+
+@keyframes borderRotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.profile-icon-final::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    45deg,
+    transparent,
+    rgba(255, 255, 255, 0.15),
+    transparent
+  );
+  transform: rotate(45deg);
+  animation: shimmer 3s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%) translateY(-100%) rotate(45deg);
+  }
+  100% {
+    transform: translateX(100%) translateY(100%) rotate(45deg);
+  }
 }
 
 .profile-dropdown-final {
@@ -1874,33 +1942,52 @@ form, .register-form, .login-form, .add-product-form, .become-seller-form {
 }
 
 .nav-menu-logout {
-  color: var(--error);
+  color: var(--white);
+  background-color: var(--error);
   font-weight: 600;
   text-align: left;
+  width: 100%;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  border: none;
+  outline: none;
 }
 
 .nav-menu-logout:hover {
-  background-color: rgba(231, 76, 60, 0.1);
-  color: var(--error);
+  background-color: #c0392b;
+  color: var(--white);
+  transform: translateX(3px);
+  box-shadow: 0 2px 8px rgba(231, 76, 60, 0.3);
+}
+
+.nav-menu-logout:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.2);
 }
 
 .nav-menu-become-seller {
   color: var(--accent-yellow);
   font-weight: 600;
+  border-radius: 8px;
+  transition: all 0.3s ease;
 }
 
 .nav-menu-become-seller:hover {
-  background-color: rgba(242, 193, 46, 0.1);
+  background-color: rgba(242, 193, 46, 0.15);
   color: var(--accent-gold);
+  transform: translateX(3px);
 }
 
 .nav-menu-add-product {
   color: var(--success);
   font-weight: 600;
+  border-radius: 8px;
+  transition: all 0.3s ease;
 }
 
 .nav-menu-add-product:hover {
-  background-color: rgba(39, 174, 96, 0.1);
+  background-color: rgba(39, 174, 96, 0.15);
+  transform: translateX(3px);
 }
 
 /* ==================== COMPREHENSIVE FOOTER ==================== */

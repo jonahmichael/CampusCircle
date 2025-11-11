@@ -3,6 +3,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { gsap } from 'gsap';
 
 const Navbar = () => {
     const navigate = useNavigate();
@@ -11,11 +12,67 @@ const Navbar = () => {
     const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
     const menuRef = useRef(null);
     const profileRef = useRef(null);
+    const profileIconRef = useRef(null);
 
     // Debug logging
     useEffect(() => {
         console.log('Navbar - isLoggedIn:', isLoggedIn, 'user:', user);
     }, [isLoggedIn, user]);
+
+    // GSAP Animation for Profile Icon
+    useEffect(() => {
+        if (profileIconRef.current && isLoggedIn) {
+            const icon = profileIconRef.current;
+            
+            // Continuous gradient color shift animation
+            const colorTl = gsap.timeline({ repeat: -1, yoyo: true });
+            colorTl.to(icon, {
+                background: 'linear-gradient(135deg, #F2C12E 0%, #024959 50%, #F2AE30 100%)',
+                duration: 4,
+                ease: 'sine.inOut'
+            }).to(icon, {
+                background: 'linear-gradient(135deg, #F2AE30 0%, #F2C12E 50%, #024959 100%)',
+                duration: 4,
+                ease: 'sine.inOut'
+            });
+
+            // Subtle pulse animation
+            gsap.to(icon, {
+                boxShadow: '0 3px 10px rgba(0, 0, 0, 0.15), 0 0 20px rgba(242, 193, 46, 0.3)',
+                duration: 2,
+                repeat: -1,
+                yoyo: true,
+                ease: 'sine.inOut'
+            });
+            
+            // Hover animations
+            const handleMouseEnter = () => {
+                gsap.to(icon, {
+                    scale: 1.15,
+                    boxShadow: '0 8px 30px rgba(242, 193, 46, 0.5), 0 0 40px rgba(242, 174, 48, 0.3)',
+                    duration: 0.4,
+                    ease: 'back.out(1.7)'
+                });
+            };
+
+            const handleMouseLeave = () => {
+                gsap.to(icon, {
+                    scale: 1,
+                    duration: 0.3,
+                    ease: 'power2.out'
+                });
+            };
+
+            icon.addEventListener('mouseenter', handleMouseEnter);
+            icon.addEventListener('mouseleave', handleMouseLeave);
+
+            return () => {
+                icon.removeEventListener('mouseenter', handleMouseEnter);
+                icon.removeEventListener('mouseleave', handleMouseLeave);
+                colorTl.kill();
+            };
+        }
+    }, [isLoggedIn]);
 
     // Close dropdowns when clicking outside
     useEffect(() => {
@@ -209,6 +266,7 @@ const Navbar = () => {
                             {/* Profile Dropdown */}
                             <div className="profile-container" ref={profileRef}>
                                 <button 
+                                    ref={profileIconRef}
                                     className="profile-icon-final"
                                     onClick={() => setProfileDropdownOpen(!profileDropdownOpen)}
                                     aria-label="Profile menu"
