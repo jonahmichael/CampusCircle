@@ -49,9 +49,10 @@ router.post('/', auth, async (req, res) => {
     const { name, description, price, category, condition, for: forType, images } = req.body;
 
     try {
+        // Check if user is a seller
         const user = await User.findById(req.user.id);
         if (!user.isSeller) {
-            return res.status(401).json({ msg: 'User is not a seller, authorization denied' });
+            return res.status(403).json({ msg: 'Access Denied: You must be a seller to add products.' });
         }
 
         const newProduct = new Product({

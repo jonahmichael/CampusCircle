@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 
 const Login = () => {
     const navigate = useNavigate();
+    const { login } = useAuth();
     const [formData, setFormData] = useState({
         collegeEmail: '',
         password: ''
@@ -22,9 +24,17 @@ const Login = () => {
 
         try {
             const res = await axios.post('http://localhost:5000/api/auth/login', formData);
-            localStorage.setItem('token', res.data.token);
-            alert('Login successful!');
-            navigate('/dashboard');
+            console.log('Login response:', res.data);
+            
+            // Wait for the login to complete
+            await login(res.data.token);
+            
+            console.log('Login completed, navigating to shop...');
+            
+            // Small delay to ensure state updates
+            setTimeout(() => {
+                navigate('/shop', { replace: true });
+            }, 100);
         } catch (err) {
             console.error(err.response?.data);
             setError(err.response?.data?.msg || 'Login failed');

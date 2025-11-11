@@ -3,9 +3,11 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 
 const Register = () => {
     const navigate = useNavigate();
+    const { login } = useAuth();
 
     // Form state
     const [formData, setFormData] = useState({
@@ -47,10 +49,27 @@ const Register = () => {
     const onSubmit = async e => {
         e.preventDefault();
         try {
-            const res = await axios.post('http://localhost:5000/api/auth/register', formData);
-            console.log(res.data);
-            alert('Registration successful! Please login.');
-            navigate('/login');
+            // Register the user
+            const registerRes = await axios.post('http://localhost:5000/api/auth/register', formData);
+            console.log('Registration successful:', registerRes.data);
+            
+            // Automatically log in the user
+            const loginRes = await axios.post('http://localhost:5000/api/auth/login', {
+                collegeEmail: formData.collegeEmail,
+                password: formData.password
+            });
+            
+            console.log('Auto-login successful, token:', loginRes.data.token);
+            
+            // Use AuthContext to set user state
+            await login(loginRes.data.token);
+            
+            console.log('Login completed, navigating to shop...');
+            
+            // Small delay to ensure state updates
+            setTimeout(() => {
+                navigate('/shop', { replace: true });
+            }, 100);
         } catch (err) {
             console.error(err.response?.data);
             alert('Error: ' + (err.response?.data?.msg || 'Registration failed'));
